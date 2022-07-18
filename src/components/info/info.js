@@ -40,7 +40,7 @@ function Info(props) {
     function handleSubmit(event) {
         event.preventDefault();
         if (password !== repassword) {
-            alert('Mật khẩu mới không trùng với nhau');
+            alert('New password does not match');
         }
         else {
             actions.fetchChangeInfo(userInfo.username, oldPassword, password, userInfo.email, userInfo.fullname);
@@ -50,12 +50,12 @@ function Info(props) {
     function uploadImage(e) {
 
         if (file === '') {
-            alert('Xin vui lòng chọn ảnh trước');
+            alert('Choose picture first!');
             return;
         }
 
         e.target.disabled = true;
-        e.target.value = '... Đang tải lên ...';
+        e.target.value = '... Uploading ...';
 
         // Start to upload image to firebase
         const fd = new FormData();
@@ -66,8 +66,8 @@ function Info(props) {
                     setButtonLabel('... ' + Math.floor(100 * progressEvent.loaded / progressEvent.total) + '% ...');
                 }
                 else {
-                    setButtonLabel('... Đợi tí nhé ...');
-                    setTimeout(setButtonLabel, 5000, 'Hoàn thành');
+                    setButtonLabel('... Please wait ...');
+                    setTimeout(setButtonLabel, 5000, 'Done');
                 }
             }
         })
@@ -76,19 +76,19 @@ function Info(props) {
             getAvatar();
         }).catch(err => {
             console.log(err);
-            alert('Không thể đăng ảnh, vui lòng thử lại');
+            alert('Can not upload picture!');
         });
     }
   
     return (
         <div className='Login'>
             <center>
-                <div className='status-login'><b>CẬP NHẬT THÔNG TIN</b></div>
+                <div className='status-login'><b>Update Infomation</b></div>
             </center>
             <form onSubmit={handleSubmit}>
 
                 <FormGroup controlId='username'>
-                    <FormLabel className='form-label'>Tên đăng nhập (không thể thay đổi)</FormLabel>
+                    <FormLabel className='form-label'>Username (Can't change)</FormLabel>
                     <FormControl
                         autoFocus
                         value={userInfo.username}
@@ -97,7 +97,7 @@ function Info(props) {
                 </FormGroup>
 
                 <FormGroup controlId='oldpassword'>
-                    <FormLabel className='form-label'>Mật khẩu cũ (bỏ trống nếu không đổi)</FormLabel>
+                    <FormLabel className='form-label'>Old password</FormLabel>
                     <FormControl
                         value={oldPassword}
                         onChange={e => setOldPassword(e.target.value)}
@@ -105,7 +105,7 @@ function Info(props) {
                 </FormGroup>
 
                 <FormGroup controlId='password'>
-                    <FormLabel className='form-label'>Mật khẩu mới (bỏ trống nếu không đổi)</FormLabel>
+                    <FormLabel className='form-label'>New password</FormLabel>
                     <FormControl
                         value={password}
                         onChange={e => setPassword(e.target.value)}
@@ -114,7 +114,7 @@ function Info(props) {
                 </FormGroup>
 
                 <FormGroup controlId='repassword'>
-                    <FormLabel className='form-label'>Nhập lại (bỏ trống nếu không cần đổi)</FormLabel>
+                    <FormLabel className='form-label'>New password (confirm)</FormLabel>
                     <FormControl
                         value={repassword}
                         onChange={e => setRepassword(e.target.value)}
@@ -124,7 +124,7 @@ function Info(props) {
                 </FormGroup>
 
                 <FormGroup controlId='email'>
-                    <FormLabel className='form-label'>E-mail cá nhân (bắt buộc)</FormLabel>
+                    <FormLabel className='form-label'>Email (required)</FormLabel>
                     <FormControl
                         value={userInfo.email}
                         onChange={e => setUserInfo({
@@ -136,7 +136,7 @@ function Info(props) {
                 </FormGroup>
 
                 <FormGroup controlId='fullname'>
-                    <FormLabel className='form-label'>Họ tên (bắt buộc)</FormLabel>
+                    <FormLabel className='form-label'>Your name</FormLabel>
                     <FormControl
                         value={userInfo.fullname}
                         onChange={e => setUserInfo({
@@ -153,11 +153,11 @@ function Info(props) {
                 <Button block as='input' type='button' variant='warning' onClick={(e) => uploadImage(e)} value={buttonLabel} onChange={() => setButtonLabel()}></Button>
 
                 <Button block disabled={!validateForm()} type='submit'>
-                    Cập nhật
+                    Update
                 </Button>
             </form>
             <center className='link'>
-                <Link to='/'>Quay về trang chủ</Link><br></br><br></br>
+                <Link to='/'>HOME</Link><br></br><br></br>
                 <p className='status-login-small'>{message}</p>
             </center>
         </div>

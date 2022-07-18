@@ -26,7 +26,7 @@ function Register(props) {
     function handleSubmit(event) {
         event.preventDefault();
         if (password !== repassword) {
-            alert('Mật khẩu không trùng với nhau');
+            alert('Passwords are not matched');
         }
         else {
             actions.fetchRegister(username, password, email, fullname);
@@ -36,11 +36,11 @@ function Register(props) {
     return (
         <div className='Login'>
             <center>
-                <div className='status-login'><b>ĐĂNG KÝ TÀI KHOẢN</b></div>
+                <div className='status-login'><b>Register</b></div>
             </center>
             <form onSubmit={handleSubmit}>
                 <FormGroup controlId='username'>
-                    <FormLabel className='form-label'>Tên đăng nhập (bắt buộc)</FormLabel>
+                    <FormLabel className='form-label'>Username (Required)</FormLabel>
                     <FormControl
                         autoFocus
                         value={username}
@@ -48,37 +48,37 @@ function Register(props) {
                         type='username'/>
                 </FormGroup>
                 <FormGroup controlId='password'>
-                    <FormLabel className='form-label'>Mật khẩu (bắt buộc)</FormLabel>
+                    <FormLabel className='form-label'>Password (Required)</FormLabel>
                     <FormControl
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                         type='password'/>
                 </FormGroup>
                 <FormGroup controlId='repassword'>
-                    <FormLabel className='form-label'>Nhập lại mật khẩu (bắt buộc)</FormLabel>
+                    <FormLabel className='form-label'>Confirm password (Required)</FormLabel>
                     <FormControl
                         value={repassword}
                         onChange={e => setRepassword(e.target.value)}
                         type='password'/>
                 </FormGroup>
                 <FormGroup controlId='email'>
-                    <FormLabel className='form-label'>E-mail cá nhân (bắt buộc)</FormLabel>
+                    <FormLabel className='form-label'>Email (Required)</FormLabel>
                     <FormControl
                         value={email}
                         onChange={e => setEmail(e.target.value)}
                         type='email'/>
                 </FormGroup>
                 <FormGroup controlId='fullname'>
-                    <FormLabel className='form-label'>Họ tên (bắt buộc)</FormLabel>
+                    <FormLabel className='form-label'>Your name (Required)</FormLabel>
                     <FormControl
                         value={fullname}
                         onChange={e => setFullname(e.target.value)}
                         type='fullname'/>
                 </FormGroup><br></br>
-                <Button block disabled={!validateForm()} type='submit'>Đăng ký</Button>
+                <Button block disabled={!validateForm()} type='submit'>Register</Button>
             </form>
             <center className='link'>
-                <Link to='/login'>Đăng nhập</Link><br></br><br></br>
+                <Link to='/login'>Login</Link><br></br><br></br>
                 <p className='status-login-small'>{message}</p>
             </center>
         </div>

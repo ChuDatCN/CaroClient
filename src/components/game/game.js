@@ -38,7 +38,7 @@ function Game(props) {
     const [chatMessage, setChatMessage] = useState('');
     const chatHistoryUI = [];
     for (var i = 0; i < chatHistory.length; i++) {
-        const color = chatHistory[i].sender === 'Mình' ? 'blue' : 'red';
+        const color = chatHistory[i].sender === 'Me' ? 'blue' : 'red';
         const style = { color: color };
         chatHistoryUI.push(<b style={style} key={i}>{chatHistory[i].sender}</b>);
         chatHistoryUI.push(': ' + chatHistory[i].message);
@@ -68,14 +68,14 @@ function Game(props) {
 
     // Setup board game
     const current = history[stepNumber];
-    const sortMode = accendingMode ? `Nước đi tăng dần` : `Nước đi giảm dần`;
+    const sortMode = accendingMode ? `Ascending Move` : `Descending Move`;
     const moves = [];
 
     history.map((step, move) => {
-        const content = move ? `Xin về lượt #${
+        const content = move ? `Back to#${
             Config.makeTwoDigits(move)}:
             (${Config.makeTwoDigits(history[move].x)},${Config.makeTwoDigits(history[move].y)})`
-        : `Xin chơi lại từ đầu !`;
+        : `Request to play again !`;
         const variant = (move === stepNumber) ? `danger` : `success`;
         
         // Get current move
@@ -129,23 +129,23 @@ function Game(props) {
                         {/* Our infomation */}
                         <Card className='card'>
                             <Card.Body className='card-body'>
-                                <Card.Title className='card-title'>[{isPlayerX ? `X` : `O`}] Mình [{isPlayerX ? `X` : `O`}]</Card.Title>
+                                <Card.Title className='card-title'>[{isPlayerX ? `X` : `O`}] Me [{isPlayerX ? `X` : `O`}]</Card.Title>
                                 <Card.Text className='card-text-bold'><b>{ourname}</b></Card.Text>
                                 <img src={avatarSrc} className='avatar-small' alt='avatar'/><br></br>
-                                <Button className='logout-button' variant='info' onClick={() => goHome()}>Trang chủ</Button>
+                                <Button className='logout-button' variant='info' onClick={() => goHome()}>Home</Button>
                             </Card.Body>
                         </Card>
                         <br></br>
                         {/* Rival infomation */}
                         <Card className='card'>
                             <Card.Body className='card-body'>
-                                <Card.Title className='card-title'>[{!isPlayerX ? `X` : `O`}] Đối thủ [{!isPlayerX ? `X` : `O`}]</Card.Title>
+                                <Card.Title className='card-title'>[{!isPlayerX ? `X` : `O`}] Opponent [{!isPlayerX ? `X` : `O`}]</Card.Title>
                                 <Card.Text className='card-text-bold'><b>{rivalname}</b></Card.Text>
                                 <img src={rivalAvatarSrc} className='avatar-small' alt='rivalAvatar'/><br></br>
                                 <Button className='logout-button' variant='info' onClick={() => requestSurrender()}
-                                        disabled={needToDisable}>Đầu hàng</Button>&nbsp;&nbsp;
+                                        disabled={needToDisable}>Surrender</Button>&nbsp;&nbsp;
                                 <Button className='logout-button' variant='info' onClick={() => requestCeasefire()}
-                                        disabled={needToDisable}>Xin hoà</Button>
+                                        disabled={needToDisable}>Draw</Button>
                             </Card.Body>
                         </Card>
                     </div>
@@ -165,14 +165,14 @@ function Game(props) {
                         {/* Chat panel */}
                         <Card className='card-chat'>
                             <Card.Body className='card-body'>
-                                <Card.Title className='card-title'>Nhắn tin</Card.Title>
+                                <Card.Title className='card-title'>Chat</Card.Title>
                                 <div className='scroll-view-chat'>
                                     {chatHistoryUI}
                                 </div>
                                 <form onSubmit={e => handleChat(e)}>
                                     <FormControl type='chatMessage'
                                         className='input-message'
-                                        placeholder='Nhập và nhấn Enter'
+                                        placeholder='Enter...'
                                         value={chatMessage}
                                         disabled={needToDisable}
                                         onChange={e => setChatMessage(e.target.value)}>
@@ -446,11 +446,11 @@ function Game(props) {
 
         // Surrender / Ceasefire
         socket.on('surrender-request', function (data) {
-            doConfirm('Đối thủ muốn đầu hàng ván này !', () => {
+            doConfirm('Opponent want to surrender! Accept?', () => {
                 socket.emit('surrender-result', {
                     message: 'yes'
                 });
-                actions.actionRequest(true, `Chúc mừng bạn đã giành chiến thắng !`);
+                actions.actionRequest(true, `Congratulations on your victory!`);
             }, () => {
                 socket.emit('surrender-result', {
                     message: 'no'
@@ -460,22 +460,22 @@ function Game(props) {
         });
         socket.on('surrender-result', function (data) {
             if (data.message === `yes`) {
-                actions.actionRequest(true, `Bạn đã chấp nhận thua cuộc !`);
+                actions.actionRequest(true, `You have accepted defeat !`);
                 if (!data.noAlert) {
-                    dialog.showAlert(`Đối thủ đã chấp nhận lời đầu hàng!`);
+                    dialog.showAlert(`Opponent accepted your surrender!`);
                 }
             }
             else {
                 actions.actionRequest(false, null);
-                dialog.showAlert(`Đối thủ đã từ chối lời đầu hàng!`);
+                dialog.showAlert(`Opponent refused your surrender!`);
             }
         });
         socket.on('ceasefire-request', function (data) {
-            doConfirm('Đối thủ muốn xin hoà ván này !', () => {
+            doConfirm('Opponent want to draw!', () => {
                 socket.emit('ceasefire-result', {
                     message: 'yes'
                 });
-                actions.actionRequest(true, `Đã thống nhất hoà nhau !`);
+                actions.actionRequest(true, `Drawed!`);
             }, () => {
                 socket.emit('ceasefire-result', {
                     message: 'no'
@@ -485,20 +485,20 @@ function Game(props) {
         });
         socket.on('ceasefire-result', function (data) {
             if (data.message === 'yes') {
-                actions.actionRequest(true, `Đã thống nhất hoà nhau !`);
+                actions.actionRequest(true, `Drawed`);
                 if (!data.noAlert) {
-                    dialog.showAlert(`Đối thủ đã chấp nhận hoà!`);
+                    dialog.showAlert(`Drawed`);
                 }
             }
             else {
                 actions.actionRequest(false, null);
-                dialog.showAlert(`Đối thủ đã từ chối hoà!`);
+                dialog.showAlert(`Opponent refused to draw!`);
             }
         });
 
         // Undo / Redo
         socket.on('undo-request', function (data) {
-            doConfirm(`Đối thủ muốn quay về lượt #${data.stepNumber}: (${data.x},${data.y}) !`, () => {
+            doConfirm(`Opponent want to move back to #${data.stepNumber}: (${data.x},${data.y}) !`, () => {
                 socket.emit('undo-result', {
                     message: 'yes',
                     stepNumber: data.stepNumber
@@ -514,18 +514,18 @@ function Game(props) {
             if (data.message === `yes`) {
                 jumpTo(data.stepNumber);
                 if (!data.noAlert) {
-                    dialog.showAlert(`Đối thủ đã đồng ý!`);
+                    dialog.showAlert(`Opponent accepted!`);
                 }
             }
             else {
-                dialog.showAlert(`Đối thủ không đồng ý!`);
+                dialog.showAlert(`Opponent denied!`);
             }
             actions.actionRequest(false, null);
         });
 
         // Play again
         socket.on('play-again-request', function (data) {
-            doConfirm('Đối thủ muốn chơi lại !', () => {
+            doConfirm('Opponent want to play again?', () => {
                 actions.actionResetGame(isPlayerX ? Config.xPlayer : Config.oPlayer);
                 socket.emit('play-again-result', {
                     message: 'yes'
@@ -540,11 +540,11 @@ function Game(props) {
             if (data.message === 'yes') {
                 actions.actionResetGame(isPlayerX ? Config.oPlayer : Config.xPlayer);
                 if (!data.noAlert) {
-                    dialog.showAlert(`Đối thủ đã đồng ý!`);
+                    dialog.showAlert(`Opponent accepted!`);
                 }
             }
             else {
-                dialog.showAlert(`Đối thủ không đồng ý!`);
+                dialog.showAlert(`Opponent denied!`);
             }
         });
 
@@ -570,7 +570,7 @@ function Game(props) {
 
     function doConfirm(message, callbackYes, callbackNo) {
         dialog.show({
-            title: 'Xác nhận',
+            title: 'MESSAGE',
             body: message,
             actions: [
                 Dialog.CancelAction(() => callbackNo()),
@@ -582,25 +582,25 @@ function Game(props) {
     }
 
     function requestSurrender() {
-        doConfirm('Bạn muốn đầu hàng ván này ?', () => {
+        doConfirm('You want to surrender ?', () => {
             socket.emit('surrender-request', userInfo.username);
-            actions.actionRequest(true, `... Đang chờ đối thủ trả lời ...`);
+            actions.actionRequest(true, `... Waiting for response ...`);
         }, () => {});
     }
 
     function requestCeasefire() {
-        doConfirm('Bạn muốn xin hoà ván này ?', () => {
+        doConfirm('You want to draw ?', () => {
             socket.emit('ceasefire-request', userInfo.username);
-            actions.actionRequest(true, `... Đang chờ đối thủ trả lời ...`);
+            actions.actionRequest(true, `... Waiting for response ...`);
         }, () => {});
     }
 
     function requestUndo(stepNumber) {
 
         if (stepNumber === 0) {
-            doConfirm('Bạn muốn chơi lại ?', () => {
+            doConfirm('You want to play again ?', () => {
                 socket.emit('play-again-request', '');
-                actions.actionRequest(true, `..! Đang chờ đối thủ đồng ý !..`);
+                actions.actionRequest(true, `..! Waiting for response !..`);
             }, () => {});
             return;
         }
@@ -619,9 +619,9 @@ function Game(props) {
             request.nextY = history[stepNumber + 1].y;
         }
 
-        doConfirm('Bạn muốn quay về lượt này ?', () => {
+        doConfirm('Confirm undo?', () => {
             socket.emit('undo-request', request);
-            actions.actionRequest(true, `... Đang chờ đối thủ trả lời ...`);
+            actions.actionRequest(true, `... Waiting for response ...`);
         }, () => {});
     }
 
