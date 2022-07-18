@@ -15,6 +15,7 @@ import Login from './containers/login';
 import Register from './containers/register';
 import Info from './containers/info';
 import './css/index.css';
+import Admin from './components/admin';
 
 // Function save state
 function saveToLocalStorage(state) {
@@ -73,11 +74,15 @@ const appRoot = (
                         <Info />
                     </Provider>
                 </Route>
+                <Route path='/admin'>
+                    <Admin />
+                </Route>   
                 <Route path='/'>
                     <Provider store={store}>
                         <Homepage />
                     </Provider>
                 </Route>
+
             </Switch>
         </div>
     </Router>

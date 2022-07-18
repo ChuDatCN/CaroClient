@@ -9,7 +9,7 @@ import config from '../../config';
 
 function Login(props) {
 
-    // Bad code for facebook redirect and get token
+    // Bad code for facebook redirect and get token 
     const address = window.location.href;
     if (address.indexOf('?token=') !== -1) {
         var token = address.substr(address.indexOf('?token=') + '?token='.length);
