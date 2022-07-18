@@ -40,14 +40,14 @@ function Login(props) {
         <div className='Login'>
             <center>
                 <img src={logo} className='App-logo-login' alt='logo' />
-                <div className='status-login'><b>ĐĂNG NHẬP ĐỂ TIẾP TỤC</b></div>
+                <div className='status-login'><b>LOGIN</b></div>
             </center>
             <form onSubmit={handleSubmit}>
 
                 <FormGroup controlId='username'>
                     <FormControl
                         autoFocus
-                        placeholder='Tên đăng nhập'
+                        placeholder='Username'
                         type='username'
                         value={username}
                         onChange={e => setUsername(e.target.value)}/>
@@ -56,14 +56,14 @@ function Login(props) {
                 <FormGroup controlId='password'>
                     <FormControl
                         value={password}
-                        placeholder='Mật khẩu'
+                        placeholder='Password'
                         onChange={e => setPassword(e.target.value)}
                         type='password'
                     />
                 </FormGroup>
 
                 <Button block disabled={!validateForm()} type='submit' >
-                    Đăng nhập
+                    Sign in
                 </Button>
 
             </form>
@@ -75,7 +75,7 @@ function Login(props) {
                     <img src={googleImg} className='google-login-image' alt='google-img'></img>
                 </button>
                 <br></br>
-                <Link to='/register'>Đăng ký tài khoản</Link><br></br><br></br>
+                <Link to='/register'>Register</Link><br></br><br></br>
                 <p className='status-login-small'>{message}</p>
             </center>
         </div>

@@ -25,8 +25,8 @@ function Homepage(props) {
         return (
             <center>
                 <img src={logo} className='App-logo-big' alt='logo' />
-                <div className='status'>ĐĂNG NHẬP ĐỂ TIẾP TỤC</div>
-                <Button className='logout-button' variant='info' onClick={() => window.location.href = '/login'}>Đăng nhập</Button>
+                <div className='status'>CARO ONLINE</div>
+                <Button className='logout-button' variant='info' onClick={() => window.location.href = '/login'}>PLAY</Button>
             </center>
         );
     }
@@ -58,10 +58,10 @@ function Homepage(props) {
                         <img src={logo} className='App-logo-big' alt='logo' />
                         <div className='status'>... {userInfo.fullname.toUpperCase()} ...</div>
                         <div className='container-button-home'>
-                            <Button className='home-buttons' variant='danger' onClick={(e) => findRival(e, userInfo)} as='input' type='button' value='Tìm đối thủ' onChange={() => { }}></Button>
-                            <Button className='home-buttons' variant='primary' onClick={(e) => playWithAI(e, userInfo)}>Chơi với AI</Button>
-                            <Button className='home-buttons' variant='success' onClick={() => changeInfo()}>Cập nhật thông tin</Button>
-                            <Button className='home-buttons' variant='info' onClick={() => logOut()}>Đăng xuất</Button>
+                            <Button className='home-buttons' variant='danger' onClick={(e) => findRival(e, userInfo)} as='input' type='button' value='FIND PLAYER' onChange={() => { }}></Button>
+                            <Button className='home-buttons' variant='primary' onClick={(e) => playWithAI(e, userInfo)}>PLAY WITH AI</Button>
+                            <Button className='home-buttons' variant='success' onClick={() => changeInfo()}>UPDATE ACCOUNT</Button>
+                            <Button className='home-buttons' variant='info' onClick={() => logOut()}>SIGN OUT</Button>
                         </div>
                     </center>
                 );
@@ -77,7 +77,7 @@ function Homepage(props) {
         return (
             <center>
                 <img src={logo} className='App-logo-big' alt='logo' />
-                <div className='status'>... ĐANG KẾT NỐI ...</div>
+                <div className='status'>... Connecting ...</div>
             </center>
         );
     }
@@ -89,7 +89,7 @@ function Homepage(props) {
     }
 
     function findRival(e, userInfo) {
-        e.target.value = '..Đang chờ đối thủ..';
+        e.target.value = '..Waiting for player..';
         e.target.disabled = true;
         socket.emit('joinroom', userInfo);
     }

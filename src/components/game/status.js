@@ -10,21 +10,21 @@ function Status(props) {
     let message;
 
     if (rivalname === 'DISCONNECTED') {
-        message = 'Đối thủ đã thoát khỏi phòng chơi !';
+        message = 'Opponent has left!';
     }
     else if (messages) {
         message = messages;
     }
     else if (winCells) {
         const winner = props.nextMove === Config.xPlayer ? Config.oPlayer : Config.xPlayer;
-        message = `Chúc mừng bạn đã giành chiến thắng !`;
+        message = `Congratulations! You won!`;
 
         if ((isPlayerX && winner === Config.oPlayer) || (!isPlayerX && winner === Config.xPlayer)) {
-            message = `Rất tiếc bạn đã thua cuộc !`;
+            message = `You losed!`;
         }
     }
     else {
-        message = `Lượt đi kế tiếp: ${  props.nextMove}`;
+        message = `Player's turn: ${  props.nextMove}`;
     }
     return (
         <div className='status'><b>{message}</b></div>
